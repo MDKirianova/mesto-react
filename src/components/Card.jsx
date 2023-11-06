@@ -1,16 +1,35 @@
-export default function Card(card){
+import React from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
+
+export default function Card({card, onCardClick, onCardLike, onCardDelete}){
+  const currentUser = React.useContext(CurrentUserContext);
+  const isOwn = card.owner._id === currentUser._id;
+  const isLiked = card.likes.some(i => i._id === currentUser._id);
+  const cardLikeButtonClassName = ( 
+    `element__like ${isLiked && 'element__like_active'}` 
+  );
+
   function handleClick() {
-    card.onCardClick(card);
+    onCardClick(card);
   }   
-  
+
+  function handleCardLike() {
+    debugger
+    onCardLike(card);
+  }
+
+  function handleDeleteClick(){
+    onCardDelete(card._id);
+  }
+
   return (
     <li className="element">
+    {isOwn && <button className='element__trash' onClick={handleDeleteClick} />} 
     <img className="element__image" alt={card.name} src={card.link} onClick={handleClick}/>
-    <button type="button"  aria-label="" className="element__trash"></button>
     <div className="element__title-like">
       <h2 className="element__title">{card.name}</h2>
       <div className="element__items-like">
-        <button type="button" aria-label="" className="element__like"></button>
+        <button type="button" aria-label="" className={cardLikeButtonClassName} onClick={handleCardLike}></button>
         <span className="element__like-register">{card.likes.length}</span>
       </div>
     </div>

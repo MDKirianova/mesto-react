@@ -29,7 +29,7 @@ class Api {
     })
   }
 
-  editUserInfo(name, about) {
+  setUserInfo(name, about) {
     return this._sendRequest(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
@@ -37,7 +37,7 @@ class Api {
     })
   }
 
-  editUserAvatar(avatar){
+  setUserAvatar(avatar){
     return this._sendRequest(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
@@ -61,18 +61,18 @@ class Api {
     })
   }
 
-  addLike(id){
-    return this._sendRequest(`${this._baseUrl}/cards/${id}/likes`, {
-      method: 'PUT',
-      headers: this._headers,
-    })
-  }
-
-  deleteLike(id){
-    return this._sendRequest(`${this._baseUrl}/cards/${id}/likes`, {
-      method: 'DELETE',
-      headers: this._headers,
-    })
+  changeLikeCardStatus(id, isLiked){
+    if(isLiked){
+      return this._sendRequest(`${this._baseUrl}/cards/${id}/likes`, {
+        method: 'PUT',
+        headers: this._headers,
+      })
+    } else {
+      return this._sendRequest(`${this._baseUrl}/cards/${id}/likes`, {
+        method: 'DELETE',
+        headers: this._headers,
+      })
+    }
   }
 }
 
